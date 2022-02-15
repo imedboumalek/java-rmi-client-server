@@ -1,6 +1,6 @@
 package client;
 
-import java.rmi.Naming;
+import java.rmi.registry.*;
 
 import models.Repondeur;
 
@@ -8,11 +8,11 @@ public class Client {
     public static void main(String[] args) {
         try {
             System.out.println("Client is booting....");
-            System.setProperty("java.rmi.server.hostname", "localhost");
-            // Repondeur repondeur = (Repondeur)
-            // Naming.lookup("//localhost:1099/repondeur");
-            // System.out.println(repondeur.repondre("World"));
-            UserInterface ui = new UserInterface();
+            Registry registry = LocateRegistry.getRegistry("127.0.0.1", 9000);
+            // lookup the laptop object and assign in laptop variable
+            Repondeur rp = (Repondeur) registry.lookup("repondeur");
+            new UserInterface(rp);
+
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();

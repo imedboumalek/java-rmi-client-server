@@ -12,17 +12,24 @@ public class Server {
         try {
 
             System.out.println("Server is booting....");
-            System.setProperty("java.rmi.server.hostname", "localhost");
 
+            int port;
+            try {
+                port = Integer.parseInt(System.getProperty("PORT"));
+
+            } catch (Exception e) {
+                port = 9000;
+            }
+
+            Registry registry = LocateRegistry.createRegistry(port);
             Repondeur repondeur = (Repondeur) UnicastRemoteObject.exportObject(new RepondeurImpl(), 0);
-            int port = Integer.parseInt(System.getProperty("PORT"));
-
-            Registry registry = LocateRegistry.getRegistry("localhost", port);
 
             registry.bind("repondeur", repondeur);
+            System.out.println("Server is ready");
         } catch (Exception e) {
             System.err.println("Server exception: " + e.toString());
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }
