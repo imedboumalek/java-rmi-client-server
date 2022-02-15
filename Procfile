@@ -1,0 +1,1 @@
+server: Java src/server/Server.java 
